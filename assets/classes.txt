@@ -1,0 +1,91 @@
+Hiz Siniri (20 km/s)
+Hiz Siniri (30 km/s)
+Hiz Siniri (40 km/s)
+Hiz Siniri (50 km/s)
+Yaya Geçidi
+Sola Tehlikeli Viraj
+2.30 M Genislik
+3.50 M Yükseklik
+Dingil 6 Tondan Fazla Yük Düsen Tasit Giremez
+Öndeki Tasit 70M Daha Yakin Takip Edemez
+Öndeki Tasiti Geçmek Yasaktir
+Dur
+Karsidan Gelene Yol Ver
+Girisi Olmayan Yol
+Tasit Trafigine Kapali Yol
+Motorlu Tasit Trafigine Kapali Yol (Motosiklet Hariç)
+Motosiklet Giremez
+Bisiklet Giremez
+Mecburi Asgari Hiz
+Kamyon Giremez
+Yaya Giremez
+Okul Geçidi
+Traktör Giremez
+Motorlu Tasit Giremez
+Tasit Giremez
+Saga Dönülmez
+Sola Dönülmez
+U Dönü?ü Yapilamaz
+Kamyonlar Öndeki Tasiti Geçemez
+Korna Yasaktir
+Yasaklama ve Kisitlamanin Sonu
+Hiz Sinirlamasi Sonu
+Geçme Yasagi Sonu
+Kamyonlar için Geçme Yasagi Sonu
+Saga Mecburi Yön
+Sola Mecburi Yön
+ileri Mecburi Yön
+ileri Ve Saga Mecburi Yön
+ileri ve Sola Mecburi Yön
+Saga ve Sola Mecburi Yön
+ilerden Saga Mecburi Yön
+ilerden Sola Mecburi Yön
+Sagdan Gidiniz
+Soldan Gidiniz
+Ada Etrafindan Dönünüz
+Mecburi Yaya Yolu
+Mecburi Asgari Hiz Sonu
+Zincir Takmak Mecburidir
+Yol Çalismasi
+isikli isaret Cihazi
+Saga Tehlikeli Viraj
+Saga Tehlikeli Devamli Virajlar
+Sola Tehlikeli Devamli Virajlar
+Tehlikeli Egim (inis)
+Tehlikeli Egim (çikis)
+Her iki Taraftan Daralan Kaplama
+Sagdan Daralan Kaplama
+Soldan Daralan Kaplama
+Açilan Köprü
+Deniz veya Nehir Kiyisinda Biten Yol
+Kasisli Yol
+Kaygan Yol
+Gevsek Malzemeli Zemin
+Gevsek sev
+Ehli Hayvan Geçebilir
+Havalimani (Alçak Uçus)
+iki Yönlü Trafik
+Dikkat
+Kontrolsüz Kavsak
+Ana Yol - Tali Yol Kavsagi
+Ana yol-Tali yol kavsagi
+Ana yol-Tali yol kavsagi
+Dönel kavsak
+Kontrollü demiryolu geçidi
+Kontrolsüz demiryolu geçidi
+Düsük banket
+Gizli buzlanma
+Yol ver
+U dönüsü levhasi
+Girisi olmayan yol kavsagi
+Durak
+Park etmek yasaktir
+Duraklamak ve park etmek yasaktir
+Park yeri
+iki yönlü yol
+Bölünmüs yol öncesi yol levhasi
+ileri çikmaz yol
+Önceligi olan yol
+U dönüsü levhasi
+Tek Yön
+Engelli sürücü paneli
