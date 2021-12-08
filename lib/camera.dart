@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,31 +18,36 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   CameraController? _controller = null;
   int _selected = 0;
   String res = "";
-  List<dynamic> predictions = [];
+  List<dynamic>? predictions = [];
+  String? output = "";
+  double confidence = 0.0;
+  CameraImage? img;
+  bool isProgress = false;
 
   @override
   void initState() {
+    super.initState();
     setupCameras();
     setupTfLite();
     WidgetsBinding.instance!.addObserver(this);
-    super.initState();
   }
 
   @override
   void dispose() async {
-    super.dispose();
-    await Tflite.close();
     _controller!.dispose();
     WidgetsBinding.instance!.removeObserver(this);
+    Tflite.close();
+    super.dispose();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (_controller == null || !_controller!.value.isInitialized) {
       return;
     }
     if (state == AppLifecycleState.inactive) {
       _controller!.dispose();
+      await Tflite.close();
     } else if (state == AppLifecycleState.resumed) {
       setupCameras();
     }
@@ -53,9 +60,14 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         title: Text('Camera'),
       ),
       body: Container(
-          child: _controller == null
-              ? widget.loadingWidget
-              : CameraPreview(_controller!)),
+          child: Column(children: [
+        _controller == null
+            ? widget.loadingWidget
+            : CameraPreview(_controller!),
+        Text(predictions!.length.toString()),
+        Text(confidence.toString()),
+        Text(output ?? "Bulunamadı"),
+      ])),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           toggleCamera();
@@ -70,13 +82,21 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
       Permission.camera,
     ].request();
     _cameras = await availableCameras();
-    var controller = await selectCamera();
-    setState(() => _controller = controller);
+    _controller = await selectCamera();
+    _controller!.initialize().then((value) => {process()});
+  }
+
+  Future<void> process() async {
+    if (!mounted) {
+      return;
+    } else {
+      _controller!.startImageStream((image) => {img = image, recognitions()});
+    }
   }
 
   selectCamera() async {
     var controller =
-        CameraController(_cameras[_selected], ResolutionPreset.low);
+        CameraController(_cameras[_selected], ResolutionPreset.medium);
     return controller;
   }
 
@@ -92,32 +112,39 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
     res = await Tflite.loadModel(
             model: "assets/model.tflite",
             labels: "assets/classes.txt",
-            numThreads: 1,
+            numThreads: 2,
             isAsset: true,
             useGpuDelegate: false) ??
         "unsuccess";
   }
 
-  predict() async {
-    _controller!.startImageStream((image) => {recognitions(image)});
-  }
-
-  recognitions(img) async {
+  Future<void> recognitions() async {
+    if (img == null) return;
+    if (isProgress) return;
+    isProgress = true;
     var recognitions = await Tflite.runModelOnFrame(
-        bytesList: img.planes.map((plane) {
+        bytesList: img!.planes.map((plane) {
           return plane.bytes;
         }).toList(), // required
-        imageHeight: img.height,
-        imageWidth: img.width,
+        imageHeight: img!.height,
+        imageWidth: img!.width,
         imageMean: 127.5, // defaults to 127.5
         imageStd: 127.5, // defaults to 127.5
         rotation: 90, // defaults to 90, Android only
-        numResults: 2, // defaults to 5
-        threshold: 0.1, // defaults to 0.1
+        numResults: 1, // defaults to 5
+        threshold: 0.5, // defaults to 0.1
         asynch: true // defaults to true
         );
-    setState(() {
-      predictions = recognitions ?? [];
-    });
+    isProgress = false;
+
+    var xd = recognitions!.map((e) => print(e['rect']));
+    if (recognitions == null) return;
+    recognitions.forEach((element) => {
+          setState(() => {
+                output = element['label'],
+                confidence = element['confidence'],
+                print(element)
+              })
+        });
   }
 }
