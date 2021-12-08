@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Ali Hakanı Sert Sert TTen'),
+      home: MyHomePage(title: 'Detection'),
     );
   }
 }
@@ -52,12 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
               Center(
                   child: TextButton(
                       onPressed: () => {
-
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Camera()))
-
+                                    builder: (context) => Camera(
+                                          loadingWidget: loadingWidget,
+                                        )))
                           },
                       child: Text(
                         'Giriş Yap',
@@ -69,14 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget get loadingWidget {
-    var wid = Center(
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [CircularProgressIndicator(), Text('Kamera Yükleniyor...')],
-        ),
-      ),
-    );
+    var wid = Center(child: CircularProgressIndicator());
     return wid;
   }
 }

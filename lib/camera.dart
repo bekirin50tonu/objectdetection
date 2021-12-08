@@ -22,8 +22,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void initState() {
     setupCameras();
     setupTfLite();
-    super.initState();
     WidgetsBinding.instance!.addObserver(this);
+    super.initState();
   }
 
   @override
@@ -53,37 +53,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         title: Text('Camera'),
       ),
       body: Container(
-          child: Column(
-        children: [
-          buildBody(),
-          Text(predictions.length.toString() ?? (res ?? ""))
-        ],
-      )),
+          child: _controller == null
+              ? widget.loadingWidget
+              : CameraPreview(_controller!)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (_selected != _cameras.length) {
-            _selected++;
-          } else {
-            _selected = 0;
-          }
+          toggleCamera();
         },
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  Widget buildBody() {
-    if (_controller == null) {
-      if (widget.loadingWidget != null) {
-        return widget.loadingWidget;
-      } else {
-        return Container(
-          color: Colors.black,
-        );
-      }
-    } else {
-      return CameraPreview(_controller!);
-    }
   }
 
   Future<void> setupCameras() async {
@@ -98,13 +77,6 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   selectCamera() async {
     var controller =
         CameraController(_cameras[_selected], ResolutionPreset.low);
-    await controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
-    ;
     return controller;
   }
 
@@ -123,10 +95,10 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             numThreads: 1,
             isAsset: true,
             useGpuDelegate: false) ??
-        "gelmedi";
+        "unsuccess";
   }
 
-  predict(img) async {
+  predict() async {
     _controller!.startImageStream((image) => {recognitions(image)});
   }
 
@@ -144,6 +116,8 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
         threshold: 0.1, // defaults to 0.1
         asynch: true // defaults to true
         );
-    predictions = recognitions ?? [];
+    setState(() {
+      predictions = recognitions ?? [];
+    });
   }
 }
