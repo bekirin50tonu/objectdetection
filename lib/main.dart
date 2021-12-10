@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:objectdetection/camera.dart';
+
+import 'camera.dart';
+/* import 'package:objectdetection/camera_backup.dart'; */
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +33,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
