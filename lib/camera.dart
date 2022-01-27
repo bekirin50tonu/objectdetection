@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tflite/tflite.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 class Camera extends StatefulWidget {
   final loadingWidget;
@@ -31,16 +32,16 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    setupCamera();
     setupTfLite();
+    setupCamera();
     WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() async {
     super.dispose();
-    _controller?.dispose();
     await Tflite.close();
+    _controller?.dispose();
     WidgetsBinding.instance!.addObserver(this);
   }
 
@@ -90,13 +91,13 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
 
   void setupTfLite() async {
     res = await Tflite.loadModel(
-            model: "assets/ssdmobilenet.tflite",
-            labels: "assets/class.txt",
+            model: "assets/tflite.tflite",
+            labels: "assets/labels.txt",
             numThreads: 1,
             isAsset: true,
             useGpuDelegate: false) ??
         "unsuccess";
-    print(res);
+    print(res.toUpperCase());
   }
 
   List<Widget> renderBoxes(List<dynamic>? predictions, int height, int width) {
@@ -138,7 +139,7 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
   void setupCamera() async {
     await [Permission.camera].request();
     _cameras = await availableCameras();
-    _controller = CameraController(_cameras[0], ResolutionPreset.medium);
+    _controller = CameraController(_cameras[0], ResolutionPreset.low);
     _controller!.initialize().then((_) {
       if (!mounted) {
         return;
@@ -152,18 +153,20 @@ class _CameraState extends State<Camera> with WidgetsBindingObserver {
             bytesList: img.planes.map((plane) {
               return plane.bytes;
             }).toList(),
-            model: "SSDMobileNet",
+            model: "ResNet",
             imageHeight: img.height,
             imageWidth: img.width,
             imageMean: 127.5,
             imageStd: 127.5,
             numResultsPerClass: 3,
-            threshold: 0.4,
+            threshold: 0.8,
           ).then((recognitions) {
             print(recognitions);
-            boxes = renderBoxes(recognitions, img.height, img.width);
+            setState(() {
+              boxes = renderBoxes(recognitions, img.height, img.width);
+            });
             isProgress = false;
-          });
+          }).catchError((onError) => {print(onError)});
         }
       });
     });

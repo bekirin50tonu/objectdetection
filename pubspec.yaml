@@ -30,6 +30,8 @@ dependencies:
   camera: ^0.9.2+2
   permission_handler: ^8.1.6
   tflite: ^1.1.2
+  tflite_flutter: ^0.9.0
+  tflite_flutter_helper: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +52,17 @@ flutter:
   assets:
     - assets/classes.txt
     - assets/model.tflite
+    - assets/model2.tflite
+    - assets/model3.tflite
+    - assets/model4.tflite
+    - assets/model5.tflite
+    - assets/model6.tflite
+    - assets/model7.tflite
+    - assets/tflite.tflite
+    - assets/detect.tflite
+    - assets/lite-model_efficientdet_lite1_detection_metadata_1.tflite
+    - assets/labelmap.txt
+    - assets/labels.txt
     - assets/ssdmobilenet.tflite
     - assets/class.txt
   #   - images/a_dot_burr.jpeg
